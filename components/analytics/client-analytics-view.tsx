@@ -6,6 +6,10 @@ const AnalyticsViews = dynamic(() => import("./analytics-view"), {
   ssr: false,
 });
 
-export default function ClientAnalyticsView() {
-  return <AnalyticsViews />;
+interface ClientAnalyticsViewProps {
+  isLoading?: boolean;
+}
+
+export default function ClientAnalyticsView({ isLoading = false }: ClientAnalyticsViewProps) {
+  return <AnalyticsViews isLoading={isLoading} />;
 }

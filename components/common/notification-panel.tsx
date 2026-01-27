@@ -4,8 +4,42 @@ import { Button } from "@/components/ui/button";
 import { IconBell } from "@/components/icons/bell-fill-icon";
 import { NotificationItem } from "@/types/notification-item";
 import { NotificationProps } from "@/types/ui";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const NotificationPanel = ({ className, notifications }: NotificationProps) => {
+interface NotificationPanelProps extends NotificationProps {
+  isLoading?: boolean;
+}
+
+const NotificationPanel = ({ className, notifications, isLoading = false }: NotificationPanelProps) => {
+  if (isLoading) {
+    return (
+      <div className="bg-[#0D0D0D80] bg-opacity-50 border border-[#2D2D2D] max-w-[400px] rounded-xl p-4 text-[#E5E5E5]">
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center gap-3">
+            <Skeleton className="w-10 h-10 rounded-md" />
+            <Skeleton className="h-5 w-24" />
+          </div>
+          <Skeleton className="h-8 w-20 rounded-md" />
+        </div>
+
+        <div className="flex flex-col gap-4">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index}
+              className="bg-[#12121266] bg-opacity-40 border border-[#2D2D2D] rounded-lg p-3 px-5 flex justify-between items-center"
+            >
+              <div className="grid gap-2 flex-1">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-3 w-48" />
+              </div>
+              <Skeleton className="w-6 h-6 rounded-sm" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#0D0D0D80]  bg-opacity-50 border border-[#2D2D2D] max-w-[400px] rounded-xl  p-4 text-[#E5E5E5]">
       <div className="flex justify-between items-center mb-4">

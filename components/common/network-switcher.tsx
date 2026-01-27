@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/utils/commonUtils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export interface Network {
   id: string;
@@ -22,6 +23,7 @@ interface NetworkSwitcherProps {
   onNetworkChange?: (network: Network) => void;
   className?: string;
   variant?: "dashboard" | "landing";
+  isLoading?: boolean;
 }
 
 const defaultNetworks: Network[] = [
@@ -37,6 +39,7 @@ export default function NetworkSwitcher({
   onNetworkChange,
   className,
   variant = "dashboard",
+  isLoading = false,
 }: NetworkSwitcherProps) {
   const [currentNetwork, setCurrentNetwork] = useState<Network>(selectedNetwork);
 
@@ -66,6 +69,17 @@ export default function NetworkSwitcher({
   );
 
   const isDashboard = variant === "dashboard";
+
+  if (isLoading) {
+    return (
+      <Skeleton
+        className={cn(
+          "h-9 w-24 rounded-md",
+          className
+        )}
+      />
+    );
+  }
 
   return (
     <DropdownMenu>

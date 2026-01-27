@@ -14,6 +14,7 @@ import {
 
 import chart from "@/public/chart-up.png";
 import { formatChartValue } from "@/utils/formatUtils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const data = [
   { month: "Jan", views: 24000 },
@@ -42,7 +43,37 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-const AnalyticsViews = () => {
+interface AnalyticsViewsProps {
+  isLoading?: boolean;
+}
+
+const AnalyticsViews = ({ isLoading = false }: AnalyticsViewsProps) => {
+  if (isLoading) {
+    return (
+      <div className="bg-[#0D0D0D80] text-white rounded-xl border border-[#2D2D2D] p-4 w-full h-full flex flex-col justify-between">
+        <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <Skeleton className="w-10 h-10 rounded-lg" />
+            <Skeleton className="h-6 w-32" />
+          </div>
+          <Skeleton className="h-8 w-20 rounded-lg" />
+        </div>
+
+        <div className="w-full h-full aspect-[3/1] rounded-lg border border-[#2D2D2D] p-2 sm:p-4">
+          <div className="h-full flex items-end gap-2">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <Skeleton
+                key={i}
+                className="flex-1"
+                style={{ height: `${Math.random() * 60 + 20}%` }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#0D0D0D80] text-white rounded-xl border border-[#2D2D2D] p-4 w-full h-full flex flex-col justify-between">
       <div className="flex justify-between items-center mb-4 flex-wrap gap-2">

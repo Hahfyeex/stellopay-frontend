@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { transactions as allTransactions } from "@/public/data/mock-data";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
@@ -14,6 +14,7 @@ import { getPageItems, getTotalPages } from "@/utils/paginationUtils";
 
 const page = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   const notifications = [
     {
@@ -42,18 +43,26 @@ const page = () => {
     router.push("/transactions");
   };
 
+  // Simulate loading for demo purposes (remove this in production)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen">
       <DashboardHeader pageTitle="Dashboard" />
       <main className="px-4 md:px-10 pt-6 pb-8 space-y-6">
-        <AccountSummary />
+        <AccountSummary isLoading={isLoading} />
 
         <div className="flex flex-col md:flex-row justify-between w-full gap-6">
           <div className="flex-1">
-            <ClientAnalyticsView />
+            <ClientAnalyticsView isLoading={isLoading} />
           </div>
 
-          <NotificationPanel notifications={notifications} />
+          <NotificationPanel notifications={notifications} isLoading={isLoading} />
         </div>
 
         <div className="max-w-full">
@@ -104,7 +113,7 @@ const page = () => {
                 </Button>
               </div>
             </div>
-            <TransactionsTable transactions={transactions} />
+            <TransactionsTable transactions={transactions} isLoading={isLoading} />
           </div>
           <Pagination
             currentPage={currentPage}

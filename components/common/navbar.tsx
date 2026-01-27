@@ -3,8 +3,15 @@
 
 import { Bell, Settings, HelpCircle } from "lucide-react";
 import NetworkSwitcher from "./network-switcher";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function Navbar() {
+interface NavbarProps {
+  walletAddress?: string;
+  isLoadingWallet?: boolean;
+  isLoadingNetwork?: boolean;
+}
+
+export default function Navbar({ walletAddress, isLoadingWallet = false, isLoadingNetwork = false }: NavbarProps) {
   return (
     <>
       <nav className="w-full h-[75px] border-b border-[#1A1A1A] px-4 md:px-10">
@@ -19,7 +26,16 @@ export default function Navbar() {
           {/* Icons and Avatar */}
           <div className="flex items-center gap-4 mt-2 sm:mt-0">
             {/* Network Switcher */}
-            <NetworkSwitcher variant="dashboard" />
+            <NetworkSwitcher variant="dashboard" isLoading={isLoadingNetwork} />
+
+            {/* Wallet Address */}
+            {isLoadingWallet ? (
+              <Skeleton className="w-32 h-6 rounded-md" />
+            ) : walletAddress ? (
+              <div className="px-3 py-1.5 bg-[#1A1A1A] border border-[#242428] rounded-md">
+                <span className="text-sm text-[#E5E5E5] font-mono">{walletAddress}</span>
+              </div>
+            ) : null}
 
             <div className="p-2 rounded-md relative">
               <Bell className="w-10 h-10 sm:w-6 sm:h-6 text-[#6e6d6e] hover:text-[#FFFFFF] transition-colors" />
